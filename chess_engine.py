@@ -7,17 +7,17 @@ def default_evaluate_board(board):
 
     if board.is_checkmate():
         if board.turn:
-            return -np.inf
-        else:
             return np.inf
+        else:
+            return -np.inf
     if board.is_stalemate():
         return 0
     if board.is_insufficient_material():
         return 0
     if board.is_fivefold_repetition():
         return 0
-    if board.is_repetition(3):
-        return 0
+    #if board.is_repetition(3):
+    #    return 0
 
     wp = len(board.pieces(chess.PAWN, chess.WHITE))
     bp = len(board.pieces(chess.PAWN, chess.BLACK))
@@ -172,7 +172,6 @@ class chess_engine():
 
 
     def MT(self,gamma, depth, root = True):
-        print('MT')
         lower, upper, move, hist_depth = self.hist.get(self.board.fen(),(-np.inf, np.inf,chess.Move.null(), 0) )
 
         if hist_depth >= depth:
@@ -187,8 +186,8 @@ class chess_engine():
             upper = g
             lower = g
 
-            if root == False:
-                self.hist[self.board.fen()]  = lower, upper, chess.Move.null() ,depth
+            #if root == False:
+            self.hist[self.board.fen()]  = lower, upper, chess.Move.null() ,depth
             return g, move
 
         else:
@@ -209,16 +208,16 @@ class chess_engine():
                 upper = g
             else:
                 lower = g
-            if root == False:
-                self.hist[self.board.fen()] = lower, upper, move ,depth
+            #if root == False:
+            self.hist[self.board.fen()] = lower, upper, move ,depth
             return g,move
 
 
     def MTD_bi(self,depth):
-        g = np.inf
+        #g = np.inf
         bound = 0
         lower, upper = -np.inf, np.inf
-        while lower < upper:
+        while lower +13 < upper:
             g,move = self.MT(bound, depth)
             if g >= bound:
                 lower = g
