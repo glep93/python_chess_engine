@@ -54,10 +54,7 @@ def default_evaluate_board(board):
     eval = material + pawnsq + knightsq + bishopsq+ rooksq+ queensq + kingsq
 
 
-    if board.turn:
-        return eval
-    else:
-        return eval
+    return eval
 
 pawntable = [
  0,  0,  0,  0,  0,  0,  0,  0,
@@ -175,7 +172,7 @@ class chess_engine():
 
 
     def MT(self,gamma, depth, root = True):
-
+        print('MT')
         lower, upper, move, hist_depth = self.hist.get(self.board.fen(),(-np.inf, np.inf,chess.Move.null(), 0) )
 
         if hist_depth >= depth:
@@ -191,7 +188,7 @@ class chess_engine():
             lower = g
 
             if root == False:
-                self.hist[self.board.fen()]  = lower, upper, move ,depth
+                self.hist[self.board.fen()]  = lower, upper, chess.Move.null() ,depth
             return g, move
 
         else:
@@ -228,6 +225,8 @@ class chess_engine():
             if g < bound:
                 upper = g
             bound =  (lower+upper)/2 #-1
+
+        g,move = self.MT(g, depth)
         return g, move
 
 
